@@ -45,6 +45,6 @@ Contribook is released under the AGPL v2 license
 
 
 
-Frank karlitschek
+Frank Karlitschek
 frank@karlitschek.de
 
