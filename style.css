@@ -1,0 +1,29 @@
+
+a { text-decoration:none; color:333333;}
+
+.contribook_blogheadline {font-family:Tahoma,Arial,Helvetica;font-size:22px; font-weight:bold;color:#333333;}
+.contribook_blogtime {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#888888;}
+.contribook_bloguser {font-family:Tahoma,Arial,Helvetica;font-size:16px; font-weight:bold;color:#555555;  }
+.contribook_blogpicture {}
+.contribook_blognavibutton {font-family:Tahoma,Arial,Helvetica;font-size:16px; font-weight:bold;color:#000088;}
+.contribook_blogheadlinesmall {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#333333;}
+.contribook_blogtimesmall {font-family:Tahoma,Arial,Helvetica;font-size:10px; color:#888888;}
+
+
+.contribook_profile_name {font-family:Tahoma,Arial,Helvetica;font-size:30px; font-weight:bold;color:#333333; text-decoration:none}
+.contribook_profile_location {font-family:Tahoma,Arial,Helvetica;font-size:12px; color:#333333; text-decoration:none}
+.contribook_profile_role {font-family:Tahoma,Arial,Helvetica;font-size:16px; font-weight:bold;color:#333333; text-decoration:none}
+.contribook_profile_description {font-family:Tahoma,Arial,Helvetica;font-size:11px;color:#555555; text-decoration:none}
+.contribook_profile_blog {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#555555; text-decoration:none}
+.contribook_profile_twitter {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#555555; text-decoration:none}
+.contribook_profile_facebook {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#555555; text-decoration:none}
+.contribook_profile_github {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#555555; text-decoration:none}
+.contribook_profile_opendesktop {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#555555; text-decoration:none}
+.contribook_profile_identica {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#555555; text-decoration:none}
+
+.contribook_micromessage {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#333333;}
+.contribook_microblogtime {font-family:Tahoma,Arial,Helvetica;font-size:11px; color:#888888;}
+.contribook_microbloguser {font-family:Tahoma,Arial,Helvetica;font-size:11px; font-weight:bold;color:#555555;  }
+.contribook_microblogpicture {}
+
+
