@@ -31,6 +31,7 @@ require('lib_contribook.php');
 
 // fetch all the pieces
 CONTRIBOOK_BLOG::importall();
+CONTRIBOOK_GITHUB::importall();
 CONTRIBOOK_MICROBLOG::importall();
 CONTRIBOOK_OCS::importall();
 CONTRIBOOK_FORUM::import();

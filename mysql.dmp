@@ -56,4 +56,14 @@ CREATE TABLE IF NOT EXISTS `ocs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+DROP TABLE IF EXISTS `github`;
+CREATE TABLE IF NOT EXISTS `github` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` varchar(255) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 

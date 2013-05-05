@@ -39,7 +39,7 @@ class CONTRIBOOK_MICROBLOG {
 
     foreach($users as $userid) {
       $data = CONTRIBOOK_USER::getuser($userid);
-      if($data['twitter']<>'') {
+      if(isset($data['twitter']) and $data['twitter']<>'') {
         CONTRIBOOK_MICROBLOG::import($userid,$data['twitter']);
       }
     }
@@ -87,20 +87,21 @@ class CONTRIBOOK_MICROBLOG {
     curl_setopt_array($feed, $options);
     $json = curl_exec($feed);
     curl_close($feed);
-
     $twitter_data = json_decode($json);
 
-
     // deleting the old stuff
-    $request=CONTRIBOOK_DB::query('delete from microblog ');
+    $request=CONTRIBOOK_DB::query('delete from microblog where user="'.addslashes($userid).'"');
     CONTRIBOOK_DB::free_result($request);
-    
     
     if(count($twitter_data)>0) {
       foreach($twitter_data as $tweet) {
-        if(CONTRIBOOK_TWITTERFILTER=='' or (stripos($tweet->text,CONTRIBOOK_TWITTERFILTER)<>false)) {
-          $request=CONTRIBOOK_DB::query('insert into microblog (user,message,url,timestamp) values("'.addslashes($userid).'","'.addslashes($tweet->text).'","'.addslashes($homepage.$twitterid).'","'.strtotime($tweet->created_at).'") ');
-          CONTRIBOOK_DB::free_result($request);
+        if(isset($tweet->text)) {
+          if(CONTRIBOOK_TWITTERFILTER=='' or (stripos($tweet->text,CONTRIBOOK_TWITTERFILTER)<>false)) {
+            $request=CONTRIBOOK_DB::query('insert into microblog (user,message,url,timestamp) values("'.addslashes($userid).'","'.addslashes($tweet->text).'","'.addslashes($homepage.$twitterid).'","'.strtotime($tweet->created_at).'") ');
+            CONTRIBOOK_DB::free_result($request);
+          }
+        }else{
+          echo('can not parse Twitter API response for '.$userid);
         }
       }
     }

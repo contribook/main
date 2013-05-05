@@ -56,16 +56,18 @@ class CONTRIBOOK_OCS {
     $xml=file_get_contents($url);
     $data=simplexml_load_string($xml);
 
-    // remove old stuff
-    $request=CONTRIBOOK_DB::query('delete from ocs where category="'.addslashes($category).'"');
-    CONTRIBOOK_DB::free_result($request);
-
-
-    // store it in the database
-    $tmp=$data->data->content;
-    for($i = 0; $i < count($tmp); $i++) {
-      $request=CONTRIBOOK_DB::query('insert into ocs (category,name,type,user,url,preview,timestamp,description) values("'.$category.'","'.addslashes($tmp[$i]->name).'", "'.addslashes($tmp[$i]->typeid).'","'.addslashes($tmp[$i]->personid).'","'.addslashes($tmp[$i]->detailpage).'", "'.addslashes($tmp[$i]->smallpreviewpic1).'","'.addslashes(strtotime($tmp[$i]->changed)).'","'.addslashes($tmp[$i]->description).'"  ) ');
+    if(isset($data->data->content)){
+     // remove old stuff
+      $request=CONTRIBOOK_DB::query('delete from ocs where category="'.addslashes($category).'"');
       CONTRIBOOK_DB::free_result($request);
+
+
+     // store it in the database
+      $tmp=$data->data->content;
+      for($i = 0; $i < count($tmp); $i++) {
+        $request=CONTRIBOOK_DB::query('insert into ocs (category,name,type,user,url,preview,timestamp,description) values("'.$category.'","'.addslashes($tmp[$i]->name).'", "'.addslashes($tmp[$i]->typeid).'","'.addslashes($tmp[$i]->personid).'","'.addslashes($tmp[$i]->detailpage).'", "'.addslashes($tmp[$i]->smallpreviewpic1).'","'.addslashes(strtotime($tmp[$i]->changed)).'","'.addslashes($tmp[$i]->description).'"  ) ');
+        CONTRIBOOK_DB::free_result($request);
+      }
     }
 
   }

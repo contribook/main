@@ -21,9 +21,11 @@ a { text-decoration:none; color:333333;}
 .contribook_profile_opendesktop {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#555555; text-decoration:none}
 .contribook_profile_identica {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#555555; text-decoration:none}
 
-.contribook_micromessage {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#333333;}
+.contribook_microblogmessage {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#333333;}
 .contribook_microblogtime {font-family:Tahoma,Arial,Helvetica;font-size:11px; color:#888888;}
 .contribook_microbloguser {font-family:Tahoma,Arial,Helvetica;font-size:11px; font-weight:bold;color:#555555;  }
 .contribook_microblogpicture {}
 
+.contribook_githubmessage {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#333333;}
+.contribook_githubtime {font-family:Tahoma,Arial,Helvetica;font-size:11px; color:#888888;}
 

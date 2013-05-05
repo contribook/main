@@ -28,7 +28,6 @@
 /**
  * Show a list of forum posts
  *
- * @param string count
  */
 class CONTRIBOOK_BLOG {
 
@@ -93,7 +92,7 @@ class CONTRIBOOK_BLOG {
 		// fetch the RSS feeds
 		foreach($users as $userid) {
 			$data = CONTRIBOOK_USER::getuser($userid);
-			if(isset($data['rssurl'])) {
+			if(isset($data['rssurl']) and $data['rssurl']<>'') {
 				CONTRIBOOK_BLOG::import($userid,$data['rssurl'], 10);
 			}
 		}

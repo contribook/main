@@ -56,10 +56,16 @@ if(isset($_GET['user'])) {
   CONTRIBOOK_PROFILE::show($_GET['user']);
   
   // show the blog posts of the user
+  echo('<br />The latest blogs<br />');
   CONTRIBOOK_BLOG::showuser($_GET['user'], 10);
   
   // show the twitter posts of the user
+  echo('<br />The latest Twitter posts<br />');
   CONTRIBOOK_MICROBLOG::showuser($_GET['user'], 10);
+
+  // show the github messages of the user
+  echo('<br />The latest github messages<br />');
+  CONTRIBOOK_GITHUB::show($_GET['user'], 10);
 
 } else {
 
