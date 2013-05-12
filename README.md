@@ -26,7 +26,7 @@ Contribook is a PHP module that is designed to be included in websites to show t
 * Create a mysql database for contribook. User the mysql.dmp as example.
 * Include the lib_contribook.php from your php pages where you want to show the content.
 * Create a config.php as adapt the settings. config.sample.php can be used as a template.
-* Create the contributor.php file using the contributor.sample.php file as a template. This will be replaced by a database backend in the future.
+* Add user accounts to the users table in the database
 * Create the templates that you want to use to show the content. The shipped templates folder and the style.css can be used as examples
 * Call the individual show function to output the data on the pages you want. The shipped index.php is an example how to do that.
 * Add a cronjob that calls cronjob.php every few minutes. Recommended is 15min

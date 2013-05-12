@@ -45,8 +45,8 @@ class CONTRIBOOK_BLOG {
 
 			$blog=CONTRIBOOK_DB::fetch_assoc($request);
 			$user = CONTRIBOOK_USER::getuser($blog['user']);
-			$blog['name']=$user['name'];
-			$blog['picture']=$user['picture_50'];
+			if(isset($user['name']) and $user['name']<>'') $blog['name']=$user['name'];
+			if(isset($user['picture_50']) and $user['picture_50']<>'') $blog['picture']=$user['picture_50'];
 			$content[]=$blog;
 
 		}

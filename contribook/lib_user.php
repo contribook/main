@@ -21,9 +21,6 @@
 *
 */
 
-// include the contributors files. This will be replaced by a database backend in the future.
-require('contributors.php');
-
 
 /**
  * class to manage user/contributors
@@ -38,11 +35,18 @@ class CONTRIBOOK_USER {
 	 * @return users as array
 	 */
 	static function getusers(){
-		global $CONTRIBOOK_contributors;
+		
+		// fetch users from the DB status: 0-> not approved, 1-> approved, 2->admin
+		$request=CONTRIBOOK_DB::query('select userid from users where status="1" or status="2"');
+		$num=CONTRIBOOK_DB::numrows($request);
+		
 		$users=array();
-		foreach($CONTRIBOOK_contributors as $key=>$value){
-			$users[]=$key;
+		for($i = 0; $i < $num; $i++) {
+			$user=CONTRIBOOK_DB::fetch_assoc($request);
+			$users[]=$user['userid'];
+
 		}
+		CONTRIBOOK_DB::free_result($request);
 		return($users);
 	}
 
@@ -54,8 +58,15 @@ class CONTRIBOOK_USER {
 	 * @return full data array of a user
 	 */
 	static function getuser($userid){
-		global $CONTRIBOOK_contributors;
-		return($CONTRIBOOK_contributors[$userid]);
+		
+		$request=CONTRIBOOK_DB::query('select * from users where userid="'.addslashes($userid).'" ');
+		$num=CONTRIBOOK_DB::numrows($request);
+
+		if($num<>1) return(array());
+		$user=CONTRIBOOK_DB::fetch_assoc($request);
+
+		CONTRIBOOK_DB::free_result($request);
+		return($user);
 	}
 
 

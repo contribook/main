@@ -36,7 +36,6 @@ class CONTRIBOOK_MICROBLOG {
   public static function importall() {
 
     $users = CONTRIBOOK_USER::getusers();
-
     foreach($users as $userid) {
       $data = CONTRIBOOK_USER::getuser($userid);
       if(isset($data['twitter']) and $data['twitter']<>'') {
@@ -102,6 +101,7 @@ class CONTRIBOOK_MICROBLOG {
           }
         }else{
           echo('can not parse Twitter API response for '.$userid);
+          print_r($tweet);
         }
       }
     }
@@ -152,8 +152,8 @@ class CONTRIBOOK_MICROBLOG {
     for ($i = 0; $i < $num; $i++) {
       $blog=CONTRIBOOK_DB::fetch_assoc($request);
       $user = CONTRIBOOK_USER::getuser($blog['user']);
-      $blog['name']=$user['name'];
-      $blog['picture_50']=$user['picture_50'];
+      if(isset($user['name']) and $user['name']<>'') $blog['name']=$user['name'];
+      if(isset($user['picture_50']) and $user['picture_50']<>'') $blog['picture_50']=$user['picture_50']; else $blog['picture_50']='';
       $content[]=$blog;
     }
     
