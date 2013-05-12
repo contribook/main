@@ -39,7 +39,7 @@ class CONTRIBOOK_BLOG {
 	public static function show($count) {
 		$content=array();
 
-		$request = CONTRIBOOK_DB::query('select user,title,url,timestamp,content from blog order by timestamp desc limit ' . addslashes($count));
+		$request = CONTRIBOOK_DB::query('select user,message,url,timestamp,content from activity where type="blog" order by timestamp desc limit ' . addslashes($count));
 		$num = CONTRIBOOK_DB::numrows($request);
 		for ($i = 0; $i < $num; $i++) {
 
@@ -64,7 +64,7 @@ class CONTRIBOOK_BLOG {
 		$content=array();
 	
 		// fetch the from the DB
-		$request = CONTRIBOOK_DB::query('select title,url,timestamp,content from blog where user="'.addslashes($userid).'" order by timestamp desc limit ' . addslashes($count));
+		$request = CONTRIBOOK_DB::query('select message,url,timestamp,content from activity where type="blog" and user="'.addslashes($userid).'" order by timestamp desc limit ' . addslashes($count));
 		$num = CONTRIBOOK_DB::numrows($request);
 		for ($i = 0; $i < $num; $i++) {
 			$blog=CONTRIBOOK_DB::fetch_assoc($request);
@@ -115,14 +115,14 @@ class CONTRIBOOK_BLOG {
 		$feed->init();
 
 		// remove old stuff
-		$request=CONTRIBOOK_DB::query('delete from blog where user="' . addslashes($userid) . '"');
+		$request=CONTRIBOOK_DB::query('delete from activity where type="blog" and user="' . addslashes($userid) . '"');
 		CONTRIBOOK_DB::free_result($request);
 	
 		// store the new items in the DB
 		$items = $feed->get_items(0, $count);
 		foreach ($items as $item) {
-			$request = CONTRIBOOK_DB::query('insert into blog (user,title,url,content,timestamp) ' .
-				 'values("' . addslashes($userid) . '","' .
+			$request = CONTRIBOOK_DB::query('insert into activity (type,user,message,url,content,timestamp) ' .
+				 'values("blog", "' . addslashes($userid) . '","' .
 					 addslashes($item->get_title()) . '","' .
 					 addslashes($item->get_permalink()) . '","' .
 					 addslashes($item->get_description()) . '","' .

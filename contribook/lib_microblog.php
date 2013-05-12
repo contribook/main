@@ -89,14 +89,14 @@ class CONTRIBOOK_MICROBLOG {
     $twitter_data = json_decode($json);
 
     // deleting the old stuff
-    $request=CONTRIBOOK_DB::query('delete from microblog where user="'.addslashes($userid).'"');
+    $request=CONTRIBOOK_DB::query('delete from activity where type="microblog" and user="'.addslashes($userid).'"');
     CONTRIBOOK_DB::free_result($request);
     
     if(count($twitter_data)>0) {
       foreach($twitter_data as $tweet) {
         if(isset($tweet->text)) {
           if(CONTRIBOOK_TWITTERFILTER=='' or (stripos($tweet->text,CONTRIBOOK_TWITTERFILTER)<>false)) {
-            $request=CONTRIBOOK_DB::query('insert into microblog (user,message,url,timestamp) values("'.addslashes($userid).'","'.addslashes($tweet->text).'","'.addslashes($homepage.$twitterid).'","'.strtotime($tweet->created_at).'") ');
+            $request=CONTRIBOOK_DB::query('insert into activity (user,type,message,url,timestamp) values("'.addslashes($userid).'","microblog","'.addslashes($tweet->text).'","'.addslashes($homepage.$twitterid).'","'.strtotime($tweet->created_at).'") ');
             CONTRIBOOK_DB::free_result($request);
           }
         }else{
@@ -146,7 +146,7 @@ class CONTRIBOOK_MICROBLOG {
   public static function show($count) {
     $content=array();
 
-    $request = CONTRIBOOK_DB::query('select user,message,url,timestamp from microblog order by timestamp desc limit ' . addslashes($count));
+    $request = CONTRIBOOK_DB::query('select user,message,url,timestamp from activity where type="microblog" order by timestamp desc limit ' . addslashes($count));
     $num = CONTRIBOOK_DB::numrows($request);
     
     for ($i = 0; $i < $num; $i++) {
@@ -171,7 +171,7 @@ class CONTRIBOOK_MICROBLOG {
   public static function showuser($user,$count) {
     $content=array();
 
-    $request = CONTRIBOOK_DB::query('select user,message,url,timestamp from microblog where user="'.addslashes($user).'" order by timestamp desc limit ' . addslashes($count));
+    $request = CONTRIBOOK_DB::query('select user,message,url,timestamp from activity where type="microblog" and user="'.addslashes($user).'" order by timestamp desc limit ' . addslashes($count));
     $num = CONTRIBOOK_DB::numrows($request);
     for ($i = 0; $i < $num; $i++) {
       $blog=CONTRIBOOK_DB::fetch_assoc($request);

@@ -1,11 +1,11 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-DROP TABLE IF EXISTS `blog`;
-CREATE TABLE IF NOT EXISTS `blog` (
+CREATE TABLE IF NOT EXISTS `activity` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) NOT NULL,
   `user` varchar(255) NOT NULL,
-  `title` varchar(255) NOT NULL,
+  `message` varchar(255) NOT NULL,
   `url` varchar(255) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `content` text NOT NULL,
@@ -18,16 +18,6 @@ DROP TABLE IF EXISTS `forum`;
 CREATE TABLE IF NOT EXISTS `forum` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `timestamp` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-DROP TABLE IF EXISTS `microblog`;
-CREATE TABLE IF NOT EXISTS `microblog` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user` varchar(255) NOT NULL,
-  `message` varchar(255) NOT NULL,
   `url` varchar(255) NOT NULL,
   `timestamp` int(11) NOT NULL,
   PRIMARY KEY (`id`)
@@ -53,16 +43,6 @@ CREATE TABLE IF NOT EXISTS `ocs` (
   `preview` varchar(255) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `description` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-DROP TABLE IF EXISTS `github`;
-CREATE TABLE IF NOT EXISTS `github` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user` varchar(255) NOT NULL,
-  `message` varchar(255) NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `timestamp` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

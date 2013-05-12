@@ -39,7 +39,7 @@ class CONTRIBOOK_GITHUB {
 		$content=array();
 	
 		// fetch the from the DB
-		$request = CONTRIBOOK_DB::query('select message,url,timestamp from github where user="'.addslashes($userid).'" order by timestamp desc limit ' . addslashes($count));
+		$request = CONTRIBOOK_DB::query('select message,url,timestamp from activity where type="github" and user="'.addslashes($userid).'" order by timestamp desc limit ' . addslashes($count));
 		$num = CONTRIBOOK_DB::numrows($request);
 		for ($i = 0; $i < $num; $i++) {
 			$item=CONTRIBOOK_DB::fetch_assoc($request);
@@ -92,15 +92,15 @@ class CONTRIBOOK_GITHUB {
 		$feed->init();
 
 		// remove old stuff
-		$request=CONTRIBOOK_DB::query('delete from github where user="' . addslashes($userid) . '"');
+		$request=CONTRIBOOK_DB::query('delete from activity where type="github" and user="' . addslashes($userid) . '"');
 		CONTRIBOOK_DB::free_result($request);
 	
 		// store the new items in the DB
 		$items = $feed->get_items(0, $count);
 		if(count($items)>0) {
 			foreach ($items as $item) {
-				$request = CONTRIBOOK_DB::query('insert into github (user,message,url,timestamp) ' .
-					 'values("' . addslashes($userid) . '","' .
+				$request = CONTRIBOOK_DB::query('insert into activity (type,user,message,url,timestamp) ' .
+					 'values("github","' . addslashes($userid) . '","' .
 						 addslashes($item->get_title()) . '","' .
 						 addslashes($item->get_permalink()) . '","' .
 						 addslashes(strtotime($item->get_date())).'")');
