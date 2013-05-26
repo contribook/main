@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `identica` varchar(255) NOT NULL,
   `opendesktop` varchar(255) NOT NULL,
   `facebook` varchar(255) NOT NULL,
+  `diaspora` varchar(255) NOT NULL,
   `github` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
