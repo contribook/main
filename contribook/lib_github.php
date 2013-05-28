@@ -52,6 +52,28 @@ class CONTRIBOOK_GITHUB {
 
 	}
 
+	/**
+	 * Show the list of github messages from all user
+	 *
+	 * @param string $count
+	 */
+	public static function showall($count) {
+		$content=array();
+	
+		// fetch the from the DB
+		$request = CONTRIBOOK_DB::query('select message,url,timestamp from activity where type="github" order by timestamp desc limit ' . addslashes($count));
+		$num = CONTRIBOOK_DB::numrows($request);
+		for ($i = 0; $i < $num; $i++) {
+			$item=CONTRIBOOK_DB::fetch_assoc($request);
+			$content[]=$item;
+	
+		}
+		
+		// render the template
+		CONTRIBOOK::showtemplate('github',$content);
+
+	}
+
 
 	/**
  	 * Import the github items from all users
