@@ -17,7 +17,7 @@ foreach($_ as $post){
 	echo($post['content']);
 	echo('<b><a href="'.$post['url'].'"><p class="contribook_blognavibutton">read more</p></a></b><br /><br />');
 	
-	echo('<br /><br />');
+	echo('<br />');
 	echo('</div>');
 	
 }

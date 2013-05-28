@@ -52,7 +52,7 @@ class CONTRIBOOK_USER {
 
 
 	/**
-	 * executes a query on the database
+	 * get the data of one user
 	 *
 	 * @param string $userid
 	 * @return full data array of a user
@@ -68,6 +68,24 @@ class CONTRIBOOK_USER {
 		CONTRIBOOK_DB::free_result($request);
 		return($user);
 	}
+
+        /**
+         * check if a user exists
+         *
+         * @param string $userid
+         * @return bool
+         */
+        static function exist($userid){
+
+                $request=CONTRIBOOK_DB::query('select * from users where userid="'.addslashes($userid).'" ');
+                $num=CONTRIBOOK_DB::numrows($request);
+
+                if($num==1) {
+			return(true);
+		}else{
+			return(false);
+		}
+        }
 
 
 

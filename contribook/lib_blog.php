@@ -142,8 +142,9 @@ class CONTRIBOOK_BLOG {
 	* @param string $count
 	*/
 	public static function showrss($title,$description,$link,$count) {
+                header('Content-Type: application/rss+xml; charset=utf-8');
+
 		$content=array();
-	
 		$request = CONTRIBOOK_DB::query('select user,message,url,timestamp,content from activity where type="blog" order by timestamp desc limit ' . addslashes($count));
 		$num = CONTRIBOOK_DB::numrows($request);
 		for ($i = 0; $i < $num; $i++) {
@@ -157,6 +158,7 @@ class CONTRIBOOK_BLOG {
 		}
 		
 		$rss=CONTRIBOOK_BLOG::generaterss($link, $title, $link, $description, $link, $content);
+                ob_clean();
 		echo($rss);
 	}
 	

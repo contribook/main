@@ -39,5 +39,4 @@ class CONTRIBOOK_PROFILE {
 		CONTRIBOOK::showtemplate('profile',$data);
 	}
 
-
 }
