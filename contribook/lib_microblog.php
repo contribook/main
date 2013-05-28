@@ -35,11 +35,13 @@ class CONTRIBOOK_MICROBLOG {
    */
   public static function importall() {
 
-    $users = CONTRIBOOK_USER::getusers();
-    foreach($users as $userid) {
-      $data = CONTRIBOOK_USER::getuser($userid);
-      if(isset($data['twitter']) and $data['twitter']<>'') {
-        CONTRIBOOK_MICROBLOG::import($userid,$data['twitter']);
+    if(CONTRIBOOK_TWITTER_OAUTH_ACCESS_TOKEN<>''){
+      $users = CONTRIBOOK_USER::getusers();
+      foreach($users as $userid) {
+        $data = CONTRIBOOK_USER::getuser($userid);
+        if(isset($data['twitter']) and $data['twitter']<>'') {
+          CONTRIBOOK_MICROBLOG::import($userid,$data['twitter']);
+        }
       }
     }
   }

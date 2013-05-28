@@ -29,3 +29,70 @@ a { text-decoration:none; color:333333;}
 .contribook_githubmessage {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#333333;}
 .contribook_githubtime {font-family:Tahoma,Arial,Helvetica;font-size:11px; color:#888888;}
 
+
+.box {
+  margin: 5px;
+  padding: 5px;
+  width: 800px;
+  max-width: 800px;
+  background: #FFFFFF;
+  float: left;
+  -webkit-border-radius: 5px;
+	 -moz-border-radius: 5px;
+		  border-radius: 5px;
+}
+
+
+/**** Transitions ****/
+.transitions-enabled.masonry,
+.transitions-enabled.masonry .masonry-brick {
+  -webkit-transition-duration: 0.7s;
+	 -moz-transition-duration: 0.7s;
+	  -ms-transition-duration: 0.7s;
+	   -o-transition-duration: 0.7s;
+		  transition-duration: 0.7s;
+}
+
+.transitions-enabled.masonry {
+  -webkit-transition-property: height, width;
+	 -moz-transition-property: height, width;
+	  -ms-transition-property: height, width;
+	   -o-transition-property: height, width;
+		  transition-property: height, width;
+}
+
+.transitions-enabled.masonry  .masonry-brick {
+  -webkit-transition-property: left, right, top;
+	 -moz-transition-property: left, right, top;
+	  -ms-transition-property: left, right, top;
+	   -o-transition-property: left, right, top;
+		  transition-property: left, right, top;
+}
+
+
+/* disable transitions on container */
+.transitions-enabled.infinite-scroll.masonry {
+  -webkit-transition-property: none;
+	 -moz-transition-property: none;
+	  -ms-transition-property: none;
+	   -o-transition-property: none;
+		  transition-property: none;
+}
+
+
+/* Infinite Scroll loader */
+#infscr-loading {
+  text-align: center;
+  z-index: 100;
+  position: fixed;
+  left: 45%;
+  bottom: 40px;
+  width: 200px;
+  padding: 10px;
+  background: #000;
+  opacity: 0.8;
+  color: #FFF;
+  -webkit-border-radius: 10px;
+	 -moz-border-radius: 10px;
+		  border-radius: 10px;
+}

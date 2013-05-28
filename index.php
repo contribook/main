@@ -47,8 +47,9 @@
 here goes some website content
 
 <br /><br />
-<div style="width:800px;">
+<div >
 <?php
+
 
 if(isset($_GET['user'])) {
 
@@ -86,18 +87,70 @@ if(isset($_GET['user'])) {
   echo('<br />The latest apps<br />');
   CONTRIBOOK_OCS::show(1,10);
 
+
   // the latest blog posts of all users
   echo('<br />The latest blogs<br />');
-  CONTRIBOOK_BLOG::show(10);
+  if(isset($_GET['page'])) $page = (int) $_GET['page']; else $page=1;
+
+  echo('<div id="container" class="transitions-enabled infinite-scroll clearfix">');
+  CONTRIBOOK_BLOG::show(($page-1)*3,3);
+  echo('</div>');
+  
+  echo('
+  <nav id="page-nav">
+    <a href="index.php?page=2"></a>
+  </nav>
+  ');
 
 }
 
 ?>
-</div>
+  </div>
 
 
-<br /><br />
-more content
+
+  <script src="jquery-1.7.1.min.js"></script>
+  <script src="jquery.masonry.min.js"></script>
+  <script src="jquery.infinitescroll.min.js"></script>
+  <script>
+  $(function(){
+
+  var $container = $('#container');
+
+  $container.imagesLoaded(function(){
+    $container.masonry({
+    itemSelector: '.box',
+    columnWidth: 100
+    });
+  });
+
+  $container.infinitescroll({
+    navSelector  : '#page-nav',    // selector for the paged navigation
+    nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
+    itemSelector : '.box',     // selector for all items you'll retrieve
+    loading: {
+      finishedMsg: 'No more pages to load.',
+      img: 'http://i.imgur.com/6RMhx.gif'
+    }
+    },
+    // trigger Masonry as a callback
+    function( newElements ) {
+    // hide new items while they are loading
+    var $newElems = $( newElements ).css({ opacity: 0 });
+    // ensure that images load before adding to masonry layout
+    $newElems.imagesLoaded(function(){
+      // show elems now they're ready
+      $newElems.animate({ opacity: 1 });
+      $container.masonry( 'appended', $newElems, true );
+    });
+    }
+  );
+
+  });
+</script>
+
+
+
 
 </body>
 </html>
