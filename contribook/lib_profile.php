@@ -39,4 +39,22 @@ class CONTRIBOOK_PROFILE {
 		CONTRIBOOK::showtemplate('profile',$data);
 	}
 
+
+	/**
+	* show all users
+	*
+	*/
+	static function showall(){
+                $users=CONTRIBOOK_USER::getusers();
+                $data=array();
+                foreach($users as $user){
+                        $temp=CONTRIBOOK_USER::getuser($user);
+                        $data[]=$temp;
+                }
+                CONTRIBOOK::showtemplate('users',$data);
+	}
+
+
+
+
 }

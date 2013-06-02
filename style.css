@@ -9,6 +9,9 @@ a { text-decoration:none; color:333333;}
 .contribook_blogheadlinesmall {font-family:Tahoma,Arial,Helvetica;font-size:12px; font-weight:bold;color:#333333;}
 .contribook_blogtimesmall {font-family:Tahoma,Arial,Helvetica;font-size:10px; color:#888888;}
 
+.contribook_profile_listname {font-family:Tahoma,Arial,Helvetica;font-size:13px; font-weight:bold;color:#333333; text-decoration:none}
+.contribook_profile_listrole {font-family:Tahoma,Arial,Helvetica;font-size:10px; font-weight:bold;color:#666666; text-decoration:none}
+.contribook_profile_listlocation {font-family:Tahoma,Arial,Helvetica;font-size:10px; font-weight:bold;color:#333333; text-decoration:none}
 
 .contribook_profile_name {font-family:Tahoma,Arial,Helvetica;font-size:30px; font-weight:bold;color:#333333; text-decoration:none}
 .contribook_profile_location {font-family:Tahoma,Arial,Helvetica;font-size:12px; color:#333333; text-decoration:none}

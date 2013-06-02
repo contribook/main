@@ -70,6 +70,9 @@ if(isset($_GET['user'])) {
 
 } else {
 
+  // show the users
+  echo('The users');
+  CONTRIBOOK_PROFILE::showall();
 
   // the latest twitter posts of all users
   echo('The latest twitter posts');
