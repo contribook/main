@@ -58,12 +58,13 @@ class CONTRIBOOK_NEWS {
  /**
     * Show a import RSS news feed
     *
+    * @param int $start
     * @param int $count
     */
-  public static function show($count){
+  public static function show($start,$count){
   
     // read it from the DB
-    $request=CONTRIBOOK_DB::query('select title,url,timestamp from news order by timestamp desc limit '.$count);
+    $request=CONTRIBOOK_DB::query('select title,url,timestamp from news order by timestamp desc limit '.addslashes($start).','.$count);
     $num=CONTRIBOOK_DB::numrows($request);
     
     $content=array();

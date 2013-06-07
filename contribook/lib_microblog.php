@@ -143,12 +143,13 @@ class CONTRIBOOK_MICROBLOG {
   /**
   * Show a list of Twitter posts from all users
   *
+  * @param string $start
   * @param string $count
   */
-  public static function show($count) {
+  public static function show($start,$count) {
     $content=array();
 
-    $request = CONTRIBOOK_DB::query('select user,message,url,timestamp from activity where type="microblog" order by timestamp desc limit ' . addslashes($count));
+    $request = CONTRIBOOK_DB::query('select user,message,url,timestamp from activity where type="microblog" order by timestamp desc limit '.addslashes($start).',' . addslashes($count));
     $num = CONTRIBOOK_DB::numrows($request);
     
     for ($i = 0; $i < $num; $i++) {
@@ -167,13 +168,14 @@ class CONTRIBOOK_MICROBLOG {
   * Show a list of Twitter posts of a user
   *
   * @param string $user
+  * @param string $start
   * @param string $count
   */
 
-  public static function showuser($user,$count) {
+  public static function showuser($user,$start,$count) {
     $content=array();
 
-    $request = CONTRIBOOK_DB::query('select user,message,url,timestamp from activity where type="microblog" and user="'.addslashes($user).'" order by timestamp desc limit ' . addslashes($count));
+    $request = CONTRIBOOK_DB::query('select user,message,url,timestamp from activity where type="microblog" and user="'.addslashes($user).'" order by timestamp desc limit '.addslashes($start).', ' . addslashes($count));
     $num = CONTRIBOOK_DB::numrows($request);
     for ($i = 0; $i < $num; $i++) {
       $blog=CONTRIBOOK_DB::fetch_assoc($request);

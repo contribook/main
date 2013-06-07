@@ -59,13 +59,14 @@ class CONTRIBOOK_BLOG {
 	 * Show the list of blog posts from a user
 	 *
 	 * @param string $userid
+	 * @param string $start
 	 * @param string $count
 	 */
-	public static function showuser($userid,$count) {
+	public static function showuser($userid,$start,$count) {
 		$content=array();
 	
 		// fetch the from the DB
-		$request = CONTRIBOOK_DB::query('select message,url,timestamp,content from activity where type="blog" and user="'.addslashes($userid).'" order by timestamp desc limit ' . addslashes($count));
+		$request = CONTRIBOOK_DB::query('select message,url,timestamp,content from activity where type="blog" and user="'.addslashes($userid).'" order by timestamp desc limit '.addslashes($start).','.addslashes($count));
 		$num = CONTRIBOOK_DB::numrows($request);
 		for ($i = 0; $i < $num; $i++) {
 			$blog=CONTRIBOOK_DB::fetch_assoc($request);

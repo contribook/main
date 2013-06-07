@@ -33,13 +33,14 @@ class CONTRIBOOK_GITHUB {
 	 * Show the list of github messages from a user
 	 *
 	 * @param string $userid
-	 * @param string $count
+	 * @param int $start
+	 * @param int $count
 	 */
-	public static function show($userid,$count) {
+	public static function show($userid,$start,$count) {
 		$content=array();
 	
 		// fetch the from the DB
-		$request = CONTRIBOOK_DB::query('select message,url,timestamp from activity where type="github" and user="'.addslashes($userid).'" order by timestamp desc limit ' . addslashes($count));
+		$request = CONTRIBOOK_DB::query('select message,url,timestamp from activity where type="github" and user="'.addslashes($userid).'" order by timestamp desc limit '.addslashes($start).',' . addslashes($count));
 		$num = CONTRIBOOK_DB::numrows($request);
 		for ($i = 0; $i < $num; $i++) {
 			$item=CONTRIBOOK_DB::fetch_assoc($request);
@@ -55,13 +56,14 @@ class CONTRIBOOK_GITHUB {
 	/**
 	 * Show the list of github messages from all user
 	 *
-	 * @param string $count
+	 * @param int $count
+	 * @param int $start
 	 */
-	public static function showall($count) {
+	public static function showall($start,$count) {
 		$content=array();
 	
 		// fetch the from the DB
-		$request = CONTRIBOOK_DB::query('select message,url,timestamp from activity where type="github" order by timestamp desc limit ' . addslashes($count));
+		$request = CONTRIBOOK_DB::query('select message,url,timestamp from activity where type="github" order by timestamp desc limit '.addslashes($start).',' . addslashes($count));
 		$num = CONTRIBOOK_DB::numrows($request);
 		for ($i = 0; $i < $num; $i++) {
 			$item=CONTRIBOOK_DB::fetch_assoc($request);
@@ -79,7 +81,7 @@ class CONTRIBOOK_GITHUB {
  	 * Import the github items from all users
 	 *
  	 * @param string $userid
-	 * @param string $count
+	 * @param int $count
 	*/
 	public static function importall() {
 

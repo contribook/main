@@ -57,12 +57,13 @@ class CONTRIBOOK_FORUM {
     /**
     * Show a list of forum posts
     *
-    * @param string count
+    * @param int $start
+    * @param int $count
     */
-    public static function show($count){
+    public static function show($start,$count){
 
         // fetch them from the DB
-        $request=CONTRIBOOK_DB::query('select title,url,timestamp from forum order by timestamp desc limit '.$count);
+        $request=CONTRIBOOK_DB::query('select title,url,timestamp from forum order by timestamp desc limit '.addslashes($start).','.$count);
         $num=CONTRIBOOK_DB::numrows($request);
 
         $content=array();

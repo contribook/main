@@ -58,15 +58,21 @@ if(isset($_GET['user'])) {
   
   // show the blog posts of the user
   echo('<br />The latest blogs<br />');
-  CONTRIBOOK_BLOG::showuser($_GET['user'], 10);
+  CONTRIBOOK_BLOG::showuser($_GET['user'], 0, 10);
   
   // show the twitter posts of the user
   echo('<br />The latest Twitter posts<br />');
-  CONTRIBOOK_MICROBLOG::showuser($_GET['user'], 10);
+  CONTRIBOOK_MICROBLOG::showuser($_GET['user'], 0, 10);
 
   // show the github messages of the user
   echo('<br />The latest github messages<br />');
-  CONTRIBOOK_GITHUB::show($_GET['user'], 10);
+  CONTRIBOOK_GITHUB::show($_GET['user'], 0, 10);
+
+
+  // show all the activities of a user
+  echo('<br />The latest activities<br />');
+  CONTRIBOOK_ACTIVITY::showuser($_GET['user'], 0, 10);
+
 
 } else {
 
@@ -76,20 +82,23 @@ if(isset($_GET['user'])) {
 
   // the latest twitter posts of all users
   echo('The latest twitter posts');
-  CONTRIBOOK_MICROBLOG::show(10);
+  CONTRIBOOK_MICROBLOG::show(0,10);
   
   // the latest news
   echo('The latest news');
-  CONTRIBOOK_NEWS::show(10);
+  CONTRIBOOK_NEWS::show(0,10);
 
   // the latest posts from the forum
   echo('The latest from the forum');
-  CONTRIBOOK_FORUM::show(10);
+  CONTRIBOOK_FORUM::show(0,10);
 
   // the latest content from an ocs server
   echo('<br />The latest apps<br />');
   CONTRIBOOK_OCS::show(1,10);
 
+  // show all the activities of a user
+  echo('<br />The latest activities<br />');
+  CONTRIBOOK_ACTIVITY::show( 0, 10);
 
   // the latest blog posts of all users
   echo('<br />The latest blogs<br />');

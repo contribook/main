@@ -31,6 +31,7 @@ require('lib_forum.php');
 require('lib_news.php');
 require('lib_ocs.php');
 require('lib_github.php');
+require('lib_activity.php');
 
 /**
  * The main class of contribook.
