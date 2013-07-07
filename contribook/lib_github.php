@@ -40,10 +40,15 @@ class CONTRIBOOK_GITHUB {
 		$content=array();
 	
 		// fetch the from the DB
-		$request = CONTRIBOOK_DB::query('select message,url,timestamp from activity where type="github" and user="'.addslashes($userid).'" order by timestamp desc limit '.addslashes($start).',' . addslashes($count));
-		$num = CONTRIBOOK_DB::numrows($request);
+		$stmt = CONTRIBOOK_DB::prepare('select message,url,timestamp from activity where type="github" and user=:userid order by timestamp desc limit :start,:count');
+		$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+		$stmt->bindParam(':start', $start, PDO::PARAM_INT);
+		$stmt->bindParam(':count', $count, PDO::PARAM_INT);
+		$stmt->execute();
+		$num = $stmt->rowCount();
+		
 		for ($i = 0; $i < $num; $i++) {
-			$item=CONTRIBOOK_DB::fetch_assoc($request);
+			$item=$stmt->fetch(PDO::FETCH_ASSOC);
 			$content[]=$item;
 	
 		}
@@ -63,12 +68,14 @@ class CONTRIBOOK_GITHUB {
 		$content=array();
 	
 		// fetch the from the DB
-		$request = CONTRIBOOK_DB::query('select message,url,timestamp from activity where type="github" order by timestamp desc limit '.addslashes($start).',' . addslashes($count));
-		$num = CONTRIBOOK_DB::numrows($request);
+		$stmt = CONTRIBOOK_DB::prepare('select message,url,timestamp from activity where type="github" order by timestamp desc limit :start,:count');
+		$stmt->bindParam(':start', $start, PDO::PARAM_INT);
+		$stmt->bindParam(':count', $count, PDO::PARAM_INT);
+		$stmt->execute();
+		$num = $stmt->rowCount();
 		for ($i = 0; $i < $num; $i++) {
-			$item=CONTRIBOOK_DB::fetch_assoc($request);
+			$item=$stmt->fetch(PDO::FETCH_ASSOC);
 			$content[]=$item;
-	
 		}
 		
 		// render the template
@@ -116,19 +123,25 @@ class CONTRIBOOK_GITHUB {
 		$feed->init();
 
 		// remove old stuff
-		$request=CONTRIBOOK_DB::query('delete from activity where type="github" and user="' . addslashes($userid) . '"');
-		CONTRIBOOK_DB::free_result($request);
-	
+		$stmt=CONTRIBOOK_DB::prepare('delete from activity where type="github" and user=:userid');
+		$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+		$stmt->execute();
+		$num = $stmt->rowCount();
+			
 		// store the new items in the DB
 		$items = $feed->get_items(0, $count);
 		if(count($items)>0) {
 			foreach ($items as $item) {
-				$request = CONTRIBOOK_DB::query('insert into activity (type,user,message,url,timestamp) ' .
-					 'values("github","' . addslashes($userid) . '","' .
-						 addslashes($item->get_title()) . '","' .
-						 addslashes($item->get_permalink()) . '","' .
-						 addslashes(strtotime($item->get_date())).'")');
-				CONTRIBOOK_DB::free_result($request);
+				$stmt = CONTRIBOOK_DB::prepare('insert into activity (type,user,message,url,timestamp) values("github", :userid, :message, :url, :timestamp');
+				$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+				$message=$item->get_title();
+				$url=$item->get_permalink();
+				$timestamp=strtotime($item->get_date());
+				$stmt->bindParam(':message', $message, PDO::PARAM_STR);
+				$stmt->bindParam(':url', $url, PDO::PARAM_STR);
+				$stmt->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
+				$stmt->execute();
+		
 			}
 		}
 		unset($feed);

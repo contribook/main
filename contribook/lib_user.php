@@ -37,16 +37,18 @@ class CONTRIBOOK_USER {
 	static function getusers(){
 		
 		// fetch users from the DB status: 0-> not approved, 1-> approved, 2->admin
-		$request=CONTRIBOOK_DB::query('select userid from users where status="1" or status="2"');
-		$num=CONTRIBOOK_DB::numrows($request);
+		$stmt=CONTRIBOOK_DB::prepare('select userid from users where status=:status1 or status=:status2');
+		$s1=1; $stmt->bindParam(':status1', $s1, PDO::PARAM_STR);
+		$s2=2; $stmt->bindParam(':status2', $s2, PDO::PARAM_STR);
+		$stmt->execute();
+		$num=$stmt->rowCount();
 		
 		$users=array();
 		for($i = 0; $i < $num; $i++) {
-			$user=CONTRIBOOK_DB::fetch_assoc($request);
+			$user=$stmt->fetch(PDO::FETCH_ASSOC);
 			$users[]=$user['userid'];
 
 		}
-		CONTRIBOOK_DB::free_result($request);
 		return($users);
 	}
 
@@ -59,33 +61,33 @@ class CONTRIBOOK_USER {
 	 */
 	static function getuser($userid){
 		
-		$request=CONTRIBOOK_DB::query('select * from users where userid="'.addslashes($userid).'" ');
-		$num=CONTRIBOOK_DB::numrows($request);
+		$stmt=CONTRIBOOK_DB::prepare('select * from users where userid=:userid');
+		$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+		$stmt->execute();
+		$num=$stmt->rowCount();
 
 		if($num<>1) return(array());
-		$user=CONTRIBOOK_DB::fetch_assoc($request);
-
-		CONTRIBOOK_DB::free_result($request);
+		$user=$stmt->fetch(PDO::FETCH_ASSOC);
 		return($user);
 	}
 
-        /**
-         * check if a user exists
-         *
-         * @param string $userid
-         * @return bool
-         */
-        static function exist($userid){
+	/**
+	 * check if a user exists
+	 *
+	 * @param string $userid
+	 * @return bool
+	 */
+	static function exist($userid){
 
-                $request=CONTRIBOOK_DB::query('select * from users where userid="'.addslashes($userid).'" ');
-                $num=CONTRIBOOK_DB::numrows($request);
+		$stmt=CONTRIBOOK_DB::prepare('select * from users where userid=:userid');
+		$num=$stmt->rowCount();
 
-                if($num==1) {
+		if($num==1) {
 			return(true);
 		}else{
 			return(false);
 		}
-        }
+	}
 
 
 

@@ -40,11 +40,16 @@ class CONTRIBOOK_BLOG {
 	public static function show($start,$count) {
 		$content=array();
 
-		$request = CONTRIBOOK_DB::query('select user,message,url,timestamp,content from activity where type="blog" order by timestamp desc limit '.addslashes($start).',' . addslashes($count));
-		$num = CONTRIBOOK_DB::numrows($request);
+		$stmt = CONTRIBOOK_DB::prepare('select user,message,url,timestamp,content from activity where type="blog" order by timestamp desc limit :start,:count');
+		
+		$stmt->bindParam(':start', $start, PDO::PARAM_INT);
+		$stmt->bindParam(':count', $count, PDO::PARAM_INT);
+		$stmt->execute();
+		$num = $stmt->rowCount();
+		
 		for ($i = 0; $i < $num; $i++) {
 
-			$blog=CONTRIBOOK_DB::fetch_assoc($request);
+			$blog=$stmt->fetch(PDO::FETCH_ASSOC);
 			$user = CONTRIBOOK_USER::getuser($blog['user']);
 			if(isset($user['name']) and $user['name']<>'') $blog['name']=$user['name'];
 			if(isset($user['picture_50']) and $user['picture_50']<>'') $blog['picture']=$user['picture_50']; else $blog['picture']='';
@@ -66,12 +71,16 @@ class CONTRIBOOK_BLOG {
 		$content=array();
 	
 		// fetch the from the DB
-		$request = CONTRIBOOK_DB::query('select message,url,timestamp,content from activity where type="blog" and user="'.addslashes($userid).'" order by timestamp desc limit '.addslashes($start).','.addslashes($count));
-		$num = CONTRIBOOK_DB::numrows($request);
+		$stmt = CONTRIBOOK_DB::prepare('select message,url,timestamp,content from activity where type="blog" and user=:userid order by timestamp desc limit :start,:count');
+		$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+		$stmt->bindParam(':start', $start, PDO::PARAM_INT);
+		$stmt->bindParam(':count', $count, PDO::PARAM_INT);
+		$stmt->execute();
+		$num = $stmt->rowCount();
+		
 		for ($i = 0; $i < $num; $i++) {
-			$blog=CONTRIBOOK_DB::fetch_assoc($request);
+			$blog=$stmt->fetch(PDO::FETCH_ASSOC);
 			$content[]=$blog;
-	
 		}
 		
 		// render the template
@@ -117,20 +126,28 @@ class CONTRIBOOK_BLOG {
 		$feed->init();
 
 		// remove old stuff
-		$request=CONTRIBOOK_DB::query('delete from activity where type="blog" and user="' . addslashes($userid) . '"');
-		CONTRIBOOK_DB::free_result($request);
-	
+		$stmt=CONTRIBOOK_DB::prepare('delete from activity where type="blog" and user=:userid');
+		$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+		$stmt->execute();
+
 		// store the new items in the DB
 		$items = $feed->get_items(0, $count);
+
 		foreach ($items as $item) {
-			$request = CONTRIBOOK_DB::query('insert into activity (type,user,message,url,content,timestamp) ' .
-				 'values("blog", "' . addslashes($userid) . '","' .
-					 addslashes($item->get_title()) . '","' .
-					 addslashes($item->get_permalink()) . '","' .
-					 addslashes($item->get_description()) . '","' .
-					 addslashes(strtotime($item->get_date())).'")');
-			CONTRIBOOK_DB::free_result($request);
+			$stmt = CONTRIBOOK_DB::prepare('insert into activity (type,user,message,url,content,timestamp) values("blog", :userid, :message, :url, :content, :timestamp)');
+			$message=$item->get_title();
+			$url=$item->get_permalink();
+			$content=$item->get_description();
+			$timestamp=strtotime($item->get_date());
+			$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+			$stmt->bindParam(':message', $message, PDO::PARAM_STR);
+			$stmt->bindParam(':url', $url, PDO::PARAM_STR);
+			$stmt->bindParam(':content', $content, PDO::PARAM_STR);
+			$stmt->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
+			$stmt->execute();
 		}
+
+
 		unset($feed);
 	}
 
@@ -146,10 +163,13 @@ class CONTRIBOOK_BLOG {
                 header('Content-Type: application/rss+xml; charset=utf-8');
 
 		$content=array();
-		$request = CONTRIBOOK_DB::query('select user,message,url,timestamp,content from activity where type="blog" order by timestamp desc limit ' . addslashes($count));
-		$num = CONTRIBOOK_DB::numrows($request);
+		$stmt = CONTRIBOOK_DB::prepeare('select user,message,url,timestamp,content from activity where type="blog" order by timestamp desc limit :count');
+		$stmt->bindParam(':count', $count, PDO::PARAM_INT);
+		$stmt->execute();
+		$num = $stmt->rowCount();
+		
 		for ($i = 0; $i < $num; $i++) {
-			$blog=CONTRIBOOK_DB::fetch_assoc($request);
+			$blog=$stmt->fetch(PDO::FETCH_ASSOC);
 			$c=array();
 			$c['TITLE']=$blog['message'];
 			$c['DESCRIPTION']=$blog['content'];
@@ -159,7 +179,7 @@ class CONTRIBOOK_BLOG {
 		}
 		
 		$rss=CONTRIBOOK_BLOG::generaterss($link, $title, $link, $description, $link, $content);
-                ob_clean();
+		ob_clean();
 		echo($rss);
 	}
 	

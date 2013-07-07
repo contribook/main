@@ -8,7 +8,7 @@ Contribook is a PHP module that is designed to be included in websites to show t
 ## Features
 * Showing the members of the community
 * Show a profile page of every user
-* Show the latest blog posts of the users (planert)
+* Show the latest blog posts of the users (planet)
 * Show the latest Twitter posts of the users
 * Show the latest forum posts
 * Show the latest apps/themes from an OCS server
@@ -18,12 +18,12 @@ Contribook is a PHP module that is designed to be included in websites to show t
 ## Requirements
 * A webserver. Recommended is Apache on Linux
 * PHP 4.3 or newer
-* MySQL
+* MySQL or any other database supported by PHP PDO
 
 
 ## Installation
 * Put the contribook subfolder on your webserver.
-* Create a mysql database for contribook. User the mysql.dmp as example.
+* Create a database for contribook. User the mysql.dmp as example.
 * Include the lib_contribook.php from your php pages where you want to show the content.
 * Create a config.php as adapt the settings. config.sample.php can be used as a template.
 * Add user accounts to the users table in the database

@@ -42,14 +42,20 @@ class CONTRIBOOK_NEWS {
     $feed->init();
     
     // remove old stuff
-    $request=CONTRIBOOK_DB::query('delete from news');
-    CONTRIBOOK_DB::free_result($request);
-
+    $stmt=CONTRIBOOK_DB::prepare('delete from news');
+    $stmt->execute();
+    
     // save the new entries in the DB
     $items=$feed->get_items(0, 10);
     foreach ($items as $item){
-      $request=CONTRIBOOK_DB::query('insert into news (title,url,timestamp) values("'.addslashes($item->get_title()).'","'.addslashes($item->get_permalink()).'","'.addslashes(strtotime($item->get_date())).'") ');
-      CONTRIBOOK_DB::free_result($request);
+        $stmt=CONTRIBOOK_DB::prepare('insert into news (title,url,timestamp) values(:title,:url,:timestamp)');
+        $title=$item->get_title();
+        $url=$item->get_permalink();
+        $timestamp=strtotime($item->get_date());
+        $stmt->bindParam(':title', $title, PDO::PARAM_STR);
+        $stmt->bindParam(':url', $url, PDO::PARAM_STR);
+        $stmt->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
+        $stmt->execute();
     }
     unset($feed);
   }
@@ -64,14 +70,18 @@ class CONTRIBOOK_NEWS {
   public static function show($start,$count){
   
     // read it from the DB
-    $request=CONTRIBOOK_DB::query('select title,url,timestamp from news order by timestamp desc limit '.addslashes($start).','.$count);
-    $num=CONTRIBOOK_DB::numrows($request);
+    $stmt=CONTRIBOOK_DB::prepare('select title,url,timestamp from news order by timestamp desc limit :start,:count');
+    $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+    $stmt->bindParam(':count', $count, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $num=$stmt->rowCount();
     
     $content=array();
     for($i = 0; $i < $num; $i++) {
-      $content[]=CONTRIBOOK_DB::fetch_assoc($request);
+      $content[]=$stmt->fetch(PDO::FETCH_ASSOC);
     }
-    CONTRIBOOK_DB::free_result($request);
+
         
     // render the template
     CONTRIBOOK::showtemplate('news',$content);

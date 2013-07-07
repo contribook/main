@@ -51,6 +51,10 @@ here goes some website content
 <?php
 
 
+
+
+
+
 if(isset($_GET['user'])) {
 
   // show the profile of a user

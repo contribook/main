@@ -91,15 +91,22 @@ class CONTRIBOOK_MICROBLOG {
     $twitter_data = json_decode($json);
 
     // deleting the old stuff
-    $request=CONTRIBOOK_DB::query('delete from activity where type="microblog" and user="'.addslashes($userid).'"');
-    CONTRIBOOK_DB::free_result($request);
+    $stmt=CONTRIBOOK_DB::prepare('delete from activity where type="microblog" and user=:userid');
+    $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+    $stmt->execute();
     
     if(count($twitter_data)>0) {
       foreach($twitter_data as $tweet) {
         if(isset($tweet->text)) {
           if(CONTRIBOOK_TWITTERFILTER=='' or (stripos($tweet->text,CONTRIBOOK_TWITTERFILTER)<>false)) {
-            $request=CONTRIBOOK_DB::query('insert into activity (user,type,message,url,timestamp) values("'.addslashes($userid).'","microblog","'.addslashes($tweet->text).'","'.addslashes($homepage.$twitterid).'","'.strtotime($tweet->created_at).'") ');
-            CONTRIBOOK_DB::free_result($request);
+            $stmt=CONTRIBOOK_DB::prepare('insert into activity (user,type,message,url,timestamp) values(:userid,"microblog",:message,:url,:timestamp)');
+            $timestamp=strtotime($tweet->created_at);
+            $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+            $stmt->bindParam(':message', $tweet->text, PDO::PARAM_STR);
+            $url=$homepage.$twitterid;
+            $stmt->bindParam(':url', $url, PDO::PARAM_STR);
+            $stmt->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
+            $stmt->execute();
           }
         }else{
           echo('can not parse Twitter API response for '.$userid);
@@ -149,11 +156,15 @@ class CONTRIBOOK_MICROBLOG {
   public static function show($start,$count) {
     $content=array();
 
-    $request = CONTRIBOOK_DB::query('select user,message,url,timestamp from activity where type="microblog" order by timestamp desc limit '.addslashes($start).',' . addslashes($count));
-    $num = CONTRIBOOK_DB::numrows($request);
+    
+    $stmt = CONTRIBOOK_DB::prepare('select user,message,url,timestamp from activity where type="microblog" order by timestamp desc limit :start,:count');
+    $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+    $stmt->bindParam(':count', $count, PDO::PARAM_INT);
+    $stmt->execute();
+    $num = $stmt->rowCount();
     
     for ($i = 0; $i < $num; $i++) {
-      $blog=CONTRIBOOK_DB::fetch_assoc($request);
+      $blog=$stmt->fetch(PDO::FETCH_ASSOC);
       $user = CONTRIBOOK_USER::getuser($blog['user']);
       if(isset($user['name']) and $user['name']<>'') $blog['name']=$user['name'];
       if(isset($user['picture_50']) and $user['picture_50']<>'') $blog['picture_50']=$user['picture_50']; else $blog['picture_50']='';
@@ -175,10 +186,15 @@ class CONTRIBOOK_MICROBLOG {
   public static function showuser($user,$start,$count) {
     $content=array();
 
-    $request = CONTRIBOOK_DB::query('select user,message,url,timestamp from activity where type="microblog" and user="'.addslashes($user).'" order by timestamp desc limit '.addslashes($start).', ' . addslashes($count));
-    $num = CONTRIBOOK_DB::numrows($request);
+    $stmt = CONTRIBOOK_DB::prepare('select user,message,url,timestamp from activity where type="microblog" and user=:user order by timestamp desc limit :start,:count');
+    $stmt->bindParam(':user', $user, PDO::PARAM_STR);
+    $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+    $stmt->bindParam(':count', $count, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $num = $stmt->rowCount();
     for ($i = 0; $i < $num; $i++) {
-      $blog=CONTRIBOOK_DB::fetch_assoc($request);
+      $blog=$stmt->fetch(PDO::FETCH_ASSOC);
       $content[]=$blog;
     }
     CONTRIBOOK::showtemplate('microblog',$content);

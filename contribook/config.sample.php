@@ -2,23 +2,14 @@
 
 // CONTRIBOOK Configfile
 
-// MySQL DB name
-define('CONTRIBOOK_DB_NAME', 'contribook');
+// DB connect string
+define('CONTRIBOOK_DB_STRING', 'mysql:host=localhost;dbname=contribook' );
 
-// MySQL login
+// DB login
 define('CONTRIBOOK_DB_LOGIN', '');
 
-// MySQL password
+// DB password
 define('CONTRIBOOK_DB_PASSWD', '');
-
-// MySQL hostname
-define('CONTRIBOOK_DB_HOST', 'localhost');
-
-// MySQL port
-define('CONTRIBOOK_DB_PORT', '3306');
-
-// MySQL socket
-define('CONTRIBOOK_DB_SOCKET', '');
 
 // User Photo URL
 define('CONTRIBOOK_USER_URL', 'index.php?user=');

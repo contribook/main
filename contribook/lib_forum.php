@@ -42,14 +42,20 @@ class CONTRIBOOK_FORUM {
         $feed->init();
 
         // remove old stuff from DB
-        $request=CONTRIBOOK_DB::query('delete from forum');
-        CONTRIBOOK_DB::free_result($request);
+        $stmt=CONTRIBOOK_DB::prepare('delete from forum');
+        $stmt->execute();
 
         // import new items into DB
         $items=$feed->get_items(0, 10);
         foreach ($items as $item){
-            $request=CONTRIBOOK_DB::query('insert into forum (title,url,timestamp) values("'.addslashes($item->get_title()).'","'.addslashes($item->get_permalink()).'","'.addslashes(strtotime($item->get_date())).'") ');
-            CONTRIBOOK_DB::free_result($request);
+            $stmt=CONTRIBOOK_DB::prepare('insert into forum (title,url,timestamp) values(:title,:url,:timestamp)');
+            $title=$item->get_title();
+            $url=$item->get_permalink();
+            $timestamp=strtotime($item->get_date());
+            $stmt->bindParam(':title', $title, PDO::PARAM_STR);
+            $stmt->bindParam(':url', $url, PDO::PARAM_STR);
+            $stmt->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
+            $stmt->execute();
         }
         unset($feed);
     }
@@ -63,14 +69,16 @@ class CONTRIBOOK_FORUM {
     public static function show($start,$count){
 
         // fetch them from the DB
-        $request=CONTRIBOOK_DB::query('select title,url,timestamp from forum order by timestamp desc limit '.addslashes($start).','.$count);
-        $num=CONTRIBOOK_DB::numrows($request);
-
+        $stmt=CONTRIBOOK_DB::prepare('select title,url,timestamp from forum order by timestamp desc limit :start,:count');
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':count', $count, PDO::PARAM_INT);
+        $stmt->execute();
+        $num=$stmt->rowCount();
+        
         $content=array();
         for($i = 0; $i < $num; $i++) {
-            $content[]=CONTRIBOOK_DB::fetch_assoc($request);
+            $content[]=$stmt->fetch(PDO::FETCH_ASSOC);
         }
-        CONTRIBOOK_DB::free_result($request);
         
         // render the template
         CONTRIBOOK::showtemplate('forum',$content);

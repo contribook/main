@@ -58,15 +58,25 @@ class CONTRIBOOK_OCS {
 
     if(isset($data->data->content)){
      // remove old stuff
-      $request=CONTRIBOOK_DB::query('delete from ocs where category="'.addslashes($category).'"');
-      CONTRIBOOK_DB::free_result($request);
-
+      $stmt=CONTRIBOOK_DB::prepare('delete from ocs where category=:category');
+      $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+      $stmt->execute();
 
      // store it in the database
       $tmp=$data->data->content;
       for($i = 0; $i < count($tmp); $i++) {
-        $request=CONTRIBOOK_DB::query('insert into ocs (category,name,type,user,url,preview,timestamp,description) values("'.$category.'","'.addslashes($tmp[$i]->name).'", "'.addslashes($tmp[$i]->typeid).'","'.addslashes($tmp[$i]->personid).'","'.addslashes($tmp[$i]->detailpage).'", "'.addslashes($tmp[$i]->smallpreviewpic1).'","'.addslashes(strtotime($tmp[$i]->changed)).'","'.addslashes($tmp[$i]->description).'"  ) ');
-        CONTRIBOOK_DB::free_result($request);
+        $stmt=CONTRIBOOK_DB::prepare('insert into ocs (category,name,type,user,url,preview,timestamp,description) values(:category,:name,:type,:user,:url,:preview,:timestamp,:description)');
+        $timestamp=strtotime($tmp[$i]->changed);
+        $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+        $stmt->bindParam(':name', $tmp[$i]->name, PDO::PARAM_STR);
+        $stmt->bindParam(':type', $tmp[$i]->typeid, PDO::PARAM_STR);
+        $stmt->bindParam(':user', $tmp[$i]->personid, PDO::PARAM_STR);
+        $stmt->bindParam(':url', $tmp[$i]->detailpage, PDO::PARAM_STR);
+        $stmt->bindParam(':preview', $tmp[$i]->smallpreviewpic1, PDO::PARAM_STR);
+        $stmt->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
+        $stmt->bindParam(':description', $tmp[$i]->description, PDO::PARAM_STR);
+        $stmt->execute();
+        
       }
     }
 
@@ -82,16 +92,19 @@ class CONTRIBOOK_OCS {
   static function show($category,$count){
     global $CONTRIBOOK_ocs_server;
 
-    $sql='select name,type,user,url,preview,timestamp,description from ocs where category='.addslashes($category).' order by timestamp desc limit '.addslashes($count);
-    $request=CONTRIBOOK_DB::query($sql);
-    $num=CONTRIBOOK_DB::numrows($request);
+    $sql='select name,type,user,url,preview,timestamp,description from ocs where category=:category order by timestamp desc limit :count';
+    $stmt=CONTRIBOOK_DB::prepare($sql);
+    $stmt->bindParam(':category', $category, PDO::PARAM_STR);
+    $stmt->bindParam(':count', $count, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $num=$stmt->rowCount();
       
     $content=array();
     for($i = 0; $i < $num; $i++) {
-      $data=CONTRIBOOK_DB::fetch_assoc($request);
+      $data=$stmt->fetch(PDO::FETCH_ASSOC);
       $content[]=$data;
     }
-    CONTRIBOOK_DB::free_result($request);
   
     // render the template
     CONTRIBOOK::showtemplate('ocs',$content);
