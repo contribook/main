@@ -132,7 +132,7 @@ class CONTRIBOOK_GITHUB {
 		$items = $feed->get_items(0, $count);
 		if(count($items)>0) {
 			foreach ($items as $item) {
-				$stmt = CONTRIBOOK_DB::prepare('insert into activity (type,user,message,url,timestamp) values("github", :userid, :message, :url, :timestamp');
+				$stmt = CONTRIBOOK_DB::prepare('insert into activity (type,user,message,url,timestamp) values("github", :userid, :message, :url, :timestamp)');
 				$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
 				$message=$item->get_title();
 				$url=$item->get_permalink();
