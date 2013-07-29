@@ -103,7 +103,7 @@ class CONTRIBOOK_MICROBLOG {
             $timestamp=strtotime($tweet->created_at);
             $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
             $stmt->bindParam(':message', $tweet->text, PDO::PARAM_STR);
-            $url=$homepage.$twitterid;
+            $url=$homepage.$twitterid.'/status/'.$tweet->id_str;
             $stmt->bindParam(':url', $url, PDO::PARAM_STR);
             $stmt->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
             $stmt->execute();
