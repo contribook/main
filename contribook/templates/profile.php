@@ -23,6 +23,7 @@ if($_['description']<>'') echo('<br /><span class="contribook_profile_descriptio
 if($_['blogurl']<>'') echo('<a href="'.$_['blogurl'].'"><span class="btn contribook_profile_blog">blog</span></a> ');
 if($_['twitter']<>'') echo('<a href="https://twitter.com/'.$_['twitter'].'"><span class="btn contribook_profile_twitter">Twitter</span></a> ');
 if($_['identica']<>'') echo('<a href="http://identi.ca/'.$_['identica'].'"><span class="btn contribook_profile_identica">identi.ca</span></a> ');
+if($_['diaspora']<>'') echo('<a href="'.$_['diaspora'].'"><span class="btn contribook_profile_diaspora">Diaspora</span></a> ');
 if($_['facebook']<>'') echo('<a href="https://www.facebook.com/'.$_['facebook'].'"><span class="btn contribook_profile_facebook">Facebook</span></a> ');
 if($_['opendesktop']<>'') echo('<a href="http://opendesktop.org/usermanager/search.php?username='.$_['opendesktop'].'"><span class=" btn contribook_profile_opendesktop">openDesktop</span></a> ');
 if($_['github']<>'') echo('<a href="https://github.com/'.$_['github'].'"><span class="btn contribook_profile_github">GitHub</span></a> ');

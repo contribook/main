@@ -103,9 +103,7 @@ class CONTRIBOOK_BLOG {
 		// fetch the RSS feeds
 		foreach($users as $userid) {
 			$data = CONTRIBOOK_USER::getuser($userid);
-			if(isset($data['rssurl']) and $data['rssurl']<>'') {
-				CONTRIBOOK_BLOG::import($userid,$data['rssurl'], 20);
-			}
+			CONTRIBOOK_BLOG::import($userid,$data['rssurl'], 20);
 		}
 	}
 
@@ -165,7 +163,7 @@ class CONTRIBOOK_BLOG {
                 header('Content-Type: application/rss+xml; charset=utf-8');
 
 		$content=array();
-		$stmt = CONTRIBOOK_DB::prepeare('select user,message,url,timestamp,content from activity where type="blog" order by timestamp desc limit :count');
+		$stmt = CONTRIBOOK_DB::prepare('select user,message,url,timestamp,content from activity where type="blog" order by timestamp desc limit :count');
 		$stmt->bindParam(':count', $count, PDO::PARAM_INT);
 		$stmt->execute();
 		$num = $stmt->rowCount();
