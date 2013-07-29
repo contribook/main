@@ -16,9 +16,8 @@ if($_['city']<>'') echo('<span class="contribook_profile_location">'.$_['city'].
 if($_['city']<>'' and $_['country']<>'') echo(', ');
 if($_['country']<>'') echo('<span class="contribook_profile_location">'.$_['country'].'</span>');
 echo('<br />');
-echo('<br />');
 
-if($_['description']<>'') echo('<br /><span class="contribook_profile_description">'.$_['description'].'</span><br /><br /><br />');
+if($_['description']<>'') echo('<br /><span class="contribook_profile_description">'.$_['description'].'</span><br /><br />');
 
 if($_['blogurl']<>'') echo('<a href="'.$_['blogurl'].'"><span class="btn contribook_profile_blog">blog</span></a> ');
 if($_['twitter']<>'') echo('<a href="https://twitter.com/'.$_['twitter'].'"><span class="btn contribook_profile_twitter">Twitter</span></a> ');
