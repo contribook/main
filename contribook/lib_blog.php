@@ -104,7 +104,7 @@ class CONTRIBOOK_BLOG {
 		foreach($users as $userid) {
 			$data = CONTRIBOOK_USER::getuser($userid);
 			if(isset($data['rssurl']) and $data['rssurl']<>'') {
-				CONTRIBOOK_BLOG::import($userid,$data['rssurl'], 10);
+				CONTRIBOOK_BLOG::import($userid,$data['rssurl'], 20);
 			}
 		}
 	}
@@ -120,35 +120,37 @@ class CONTRIBOOK_BLOG {
 	 */
 	private static function import($userid, $blogurl, $count) {
 
-		// fetch the RSS
-		$feed = new SimplePie();
-		$feed->set_feed_url($blogurl);
-		$feed->init();
-
 		// remove old stuff
 		$stmt=CONTRIBOOK_DB::prepare('delete from activity where type="blog" and user=:userid');
 		$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
 		$stmt->execute();
 
-		// store the new items in the DB
-		$items = $feed->get_items(0, $count);
+		if(!empty($blogurl)) {
 
-		foreach ($items as $item) {
-			$stmt = CONTRIBOOK_DB::prepare('insert into activity (type,user,message,url,content,timestamp) values("blog", :userid, :message, :url, :content, :timestamp)');
-			$message=$item->get_title();
-			$url=$item->get_permalink();
-			$content=$item->get_description();
-			$timestamp=strtotime($item->get_date());
-			$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
-			$stmt->bindParam(':message', $message, PDO::PARAM_STR);
-			$stmt->bindParam(':url', $url, PDO::PARAM_STR);
-			$stmt->bindParam(':content', $content, PDO::PARAM_STR);
-			$stmt->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
-			$stmt->execute();
+			// fetch the RSS
+			$feed = new SimplePie();
+			$feed->set_feed_url($blogurl);
+			$feed->init();
+
+			// store the new items in the DB
+			$items = $feed->get_items(0, $count);
+
+			foreach ($items as $item) {
+				$stmt = CONTRIBOOK_DB::prepare('insert into activity (type,user,message,url,content,timestamp) values("blog", :userid, :message, :url, :content, :timestamp)');
+				$message=$item->get_title();
+				$url=$item->get_permalink();
+				$content=$item->get_description();
+				$timestamp=strtotime($item->get_date());
+				$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+				$stmt->bindParam(':message', $message, PDO::PARAM_STR);
+				$stmt->bindParam(':url', $url, PDO::PARAM_STR);
+				$stmt->bindParam(':content', $content, PDO::PARAM_STR);
+				$stmt->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
+				$stmt->execute();
+			}
+
+			unset($feed);
 		}
-
-
-		unset($feed);
 	}
 
 	/**
