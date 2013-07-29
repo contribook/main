@@ -80,6 +80,8 @@ class CONTRIBOOK_USER {
 	static function exist($userid){
 
 		$stmt=CONTRIBOOK_DB::prepare('select * from users where userid=:userid');
+                $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+                $stmt->execute();
 		$num=$stmt->rowCount();
 
 		if($num==1) {

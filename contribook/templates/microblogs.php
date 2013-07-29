@@ -3,23 +3,24 @@
 
 if(count($_)>0){
 
-	echo('<ul>');
-	foreach($_ as $post){
+        echo('<table>');
+        foreach($_ as $post){
 
-		echo('<li>');
-			
-		if($post['picture_50']<>''){
-			echo('<span class="contribook_microbloguserpicture"><a href="'.CONTRIBOOK_USER_URL.$post['user'].'"><img src="'.CONTRIBOOK_PHOTO_URL.$post['picture_50'].'" border="0" /></a></span>');
-		}
-		echo('<span class="contribook_microbloguser"><a href="'.CONTRIBOOK_USER_URL.$post['user'].'">'.$post['name'].'</a></span> ');
-		echo('<span class="contribook_microblogtime">'.date('F j, Y',$post['timestamp']).'</span><br />');
+                echo('<tr><td style="padding:5px;">');
 
-		echo('<a href="'.$post['url'].'"><span class="contribook_microblogmessage">'.$post['message'].'</span></a><br /><br />');
+                if($post['picture_50']<>''){
+                        echo('<span class="contribook_microbloguserpicture"><a href="'.CONTRIBOOK_USER_URL.$post['user'].'"><img src="'.CONTRIBOOK_PHOTO_URL.$post['picture_50'].'" border="0" /></a></span>');
+                }
+                echo('</td><td style="padding:5px;">');
+                echo('<span class="contribook_microbloguser"><a href="'.CONTRIBOOK_USER_URL.$post['user'].'">'.$post['name'].'</a></span> ');
+                echo('<span class="contribook_microblogtime">'.date('F j, Y',$post['timestamp']).'</span><br />');
 
-		echo('</li>');
+                echo('<a href="'.$post['url'].'"><span class="contribook_microblogmessage">'.$post['message'].'</span></a>');
 
-	}
-	echo('</ul>');
+                echo('</td></tr>');
+
+        }
+        echo('</table>');
 }
 
 
