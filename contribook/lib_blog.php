@@ -137,7 +137,7 @@ class CONTRIBOOK_BLOG {
 				$stmt = CONTRIBOOK_DB::prepare('insert into activity (type,user,message,url,content,timestamp) values("blog", :userid, :message, :url, :content, :timestamp)');
 				$message=$item->get_title();
 				$url=$item->get_permalink();
-				$content=$item->get_description();
+				$content=$item->get_content();
 				$timestamp=strtotime($item->get_date());
 				$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
 				$stmt->bindParam(':message', $message, PDO::PARAM_STR);
