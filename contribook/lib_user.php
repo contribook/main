@@ -41,11 +41,9 @@ class CONTRIBOOK_USER {
 		$s1=1; $stmt->bindParam(':status1', $s1, PDO::PARAM_STR);
 		$s2=2; $stmt->bindParam(':status2', $s2, PDO::PARAM_STR);
 		$stmt->execute();
-		$num=$stmt->rowCount();
 		
 		$users=array();
-		for($i = 0; $i < $num; $i++) {
-			$user=$stmt->fetch(PDO::FETCH_ASSOC);
+		foreach ($stmt as $user) {
 			$users[]=$user['userid'];
 
 		}
@@ -64,11 +62,12 @@ class CONTRIBOOK_USER {
 		$stmt=CONTRIBOOK_DB::prepare('select * from users where userid=:userid');
 		$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
 		$stmt->execute();
-		$num=$stmt->rowCount();
+		$num=0;
 
-		if($num<>1) return(array());
-		$user=$stmt->fetch(PDO::FETCH_ASSOC);
-		return($user);
+		foreach ($stmt as $user) {
+		  $num++;
+		}
+		return($num === 1 ? $user : array());
 	}
 
 	/**

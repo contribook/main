@@ -1,0 +1,64 @@
+CREATE TABLE IF NOT EXISTS `activity` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `type` varchar(255) NOT NULL,
+  `user` varchar(255) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `content` text NOT NULL
+);
+CREATE INDEX IF NOT EXISTS activity_user ON activity (user,timestamp);
+CREATE INDEX IF NOT EXISTS activity_timestamp ON activity (timestamp);
+
+DROP TABLE IF EXISTS `forum`;
+CREATE TABLE IF NOT EXISTS `forum` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `title` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `timestamp` int(11) NOT NULL
+);
+
+DROP TABLE IF EXISTS `news`;
+CREATE TABLE IF NOT EXISTS `news` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `title` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `timestamp` int(11) NOT NULL
+);
+
+DROP TABLE IF EXISTS `ocs`;
+CREATE TABLE IF NOT EXISTS `ocs` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `category` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` int(11) NOT NULL,
+  `user` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `preview` varchar(255) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `description` text NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `status` int(11) NOT NULL,
+  `userid` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `role` text NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `picture_50` varchar(255) NOT NULL,
+  `picture_100` varchar(255) NOT NULL,
+  `picture_200` varchar(255) NOT NULL,
+  `blogurl` varchar(255) NOT NULL,
+  `rssurl` varchar(255) NOT NULL,
+  `twitter` varchar(255) NOT NULL,
+  `identica` varchar(255) NOT NULL,
+  `opendesktop` varchar(255) NOT NULL,
+  `facebook` varchar(255) NOT NULL,
+  `diaspora` varchar(255) NOT NULL,
+  `github` varchar(255) NOT NULL
+);
+

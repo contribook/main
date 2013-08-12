@@ -45,11 +45,8 @@ class CONTRIBOOK_BLOG {
 		$stmt->bindParam(':start', $start, PDO::PARAM_INT);
 		$stmt->bindParam(':count', $count, PDO::PARAM_INT);
 		$stmt->execute();
-		$num = $stmt->rowCount();
 		
-		for ($i = 0; $i < $num; $i++) {
-
-			$blog=$stmt->fetch(PDO::FETCH_ASSOC);
+		foreach ($stmt as $blog) {
 			$user = CONTRIBOOK_USER::getuser($blog['user']);
 			if(isset($user['name']) and $user['name']<>'') $blog['name']=$user['name'];
 			if(isset($user['picture_50']) and $user['picture_50']<>'') $blog['picture']=$user['picture_50']; else $blog['picture']='';
@@ -76,10 +73,8 @@ class CONTRIBOOK_BLOG {
 		$stmt->bindParam(':start', $start, PDO::PARAM_INT);
 		$stmt->bindParam(':count', $count, PDO::PARAM_INT);
 		$stmt->execute();
-		$num = $stmt->rowCount();
 		
-		for ($i = 0; $i < $num; $i++) {
-			$blog=$stmt->fetch(PDO::FETCH_ASSOC);
+		foreach ($stmt as $blog) {
 			$content[]=$blog;
 		}
 		
@@ -166,10 +161,8 @@ class CONTRIBOOK_BLOG {
 		$stmt = CONTRIBOOK_DB::prepare('select user,message,url,timestamp,content from activity where type="blog" order by timestamp desc limit :count');
 		$stmt->bindParam(':count', $count, PDO::PARAM_INT);
 		$stmt->execute();
-		$num = $stmt->rowCount();
 		
-		for ($i = 0; $i < $num; $i++) {
-			$blog=$stmt->fetch(PDO::FETCH_ASSOC);
+		foreach ($stmt as $blog) {
 			$c=array();
 			$c['TITLE']=$blog['message'];
 			$c['DESCRIPTION']=$blog['content'];
