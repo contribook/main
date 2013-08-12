@@ -78,16 +78,15 @@ class CONTRIBOOK_USER {
 	 */
 	static function exist($userid){
 
-		$stmt=CONTRIBOOK_DB::prepare('select * from users where userid=:userid');
-                $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
-                $stmt->execute();
-		$num=$stmt->rowCount();
+		$stmt=CONTRIBOOK_DB::prepare('select count(*) as total from users where userid=:userid');
+		$stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+		$stmt->execute();
 
-		if($num==1) {
-			return(true);
-		}else{
-			return(false);
+		foreach ($stmt as $result) {
+		  return($result['total'] == 1);
 		}
+
+		return(false);
 	}
 
 
