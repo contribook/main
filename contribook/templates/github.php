@@ -9,7 +9,7 @@ if(count($_)>0){
 
 		echo('<li>');
 			
-		echo('<a href="'.$post['url'].'"><span class="contribook_githubmessage">'.$post['message'].'</span></a> ');
+		echo('<a href="'.$post['url'].'"><span class="contribook_githubmessage">'.htmlentities($post['message']).'</span></a> ');
 		echo('<span class="contribook_githubtime">'.date('F j, Y',$post['timestamp']).'</span>');
 
 		echo('</li>');
