@@ -9,9 +9,9 @@ foreach($_ as $post){
 	if(CONTRIBOOK_USER_URL=='') {
 		echo('<span class="contribook_bloguser">'.$post['name'].'</span><br />');
 	}else{
-		echo('<span class="contribook_bloguser"><a href="'.CONTRIBOOK_USER_URL.$post['user'].'">'.$post['name'].'</a></span><br />');
+		echo('<span class="contribook_bloguser"><a href="'.CONTRIBOOK_USER_URL.$post['user'].'">'.htmlentities($post['name']).'</a></span><br />');
 	}
-	echo('<a href="'.$post['url'].'"><span class="contribook_blogheadline">'.$post['message'].'</span></a><br />');
+	echo('<a href="'.$post['url'].'"><span class="contribook_blogheadline">'.htmlentities($post['message']).'</span></a><br />');
 	echo('<span class="contribook_blogtime">'.date('F j, Y',$post['timestamp']).'</span><br /><br />');
 
 	echo($post['content']);
