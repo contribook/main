@@ -158,7 +158,11 @@ class CONTRIBOOK_BLOG {
                 header('Content-Type: application/rss+xml; charset=utf-8');
 
 		$content=array();
-		$stmt = CONTRIBOOK_DB::prepare('select user,message,url,timestamp,content from activity where type="blog" order by timestamp desc limit :count');
+		$stmt = CONTRIBOOK_DB::prepare('select activity.user as userid,users.name as author,
+				activity.message,activity.url,activity.timestamp,activity.content 
+				from activity,users 
+				where activity.user = users.userid and type="blog" 
+				order by timestamp desc limit :count');
 		$stmt->bindParam(':count', $count, PDO::PARAM_INT);
 		$stmt->execute();
 		
@@ -168,6 +172,7 @@ class CONTRIBOOK_BLOG {
 			$c['DESCRIPTION']=$blog['content'];
 			$c['LINK']=$blog['url'];
 			$c['DATE']=date('r',$blog['timestamp']);
+			$c['AUTHOR']=$blog['author'] . ' (' . $blog['userid'] . ')';
 			$content[]=$c;
 		}
 		
@@ -225,6 +230,7 @@ class CONTRIBOOK_BLOG {
 			if (isset($content[$i]['LINK']))     xmlwriter_write_element($writer,'comments',$content[$i]['LINK']);
 			if (isset($content[$i]['DATE']))     xmlwriter_write_element($writer,'pubDate',$content[$i]['DATE']);
 			if (isset($content[$i]['CATEGORY'])) xmlwriter_write_element($writer,'category',$content[$i]['CATEGORY']);
+  			if (isset($content[$i]['AUTHOR']))   xmlwriter_write_element($writer,'author',$content[$i]['AUTHOR']);
   
   
 			if (isset($content[$i]['DESCRIPTION'])) {
